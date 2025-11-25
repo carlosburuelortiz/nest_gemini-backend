@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { BasicPromptDto } from './dtos/basic-prompt-dto';
 
 @Injectable()
 export class GeminiService {
-    basicPrompt() {
-        return { hola : 'Saludos desde el servicio' };
+    basicPrompt(basicPromptDto: BasicPromptDto) {
+        console.log(basicPromptDto);
+        return basicPromptDto;
     }
 }
