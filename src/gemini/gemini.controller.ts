@@ -55,7 +55,7 @@ export class GeminiController {
   ) {
     chatPromptDto.files = files;
 
-    const stream = await this.geminiService.basicPromptStream(chatPromptDto);
+    const stream = await this.geminiService.chatStream(chatPromptDto);
 
     const data = await this.outputStreamResponse(res, stream);
 
