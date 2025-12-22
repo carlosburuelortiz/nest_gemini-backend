@@ -5,10 +5,11 @@ import type { Response } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ChatPromptDto } from './dtos/chat-prompt-dto';
 import { GenerateContentResponse } from '@google/genai';
+import { ImageGenerationDto } from './dtos/image-generation-dto';
 
 @Controller('gemini')
 export class GeminiController {
-  constructor(private readonly geminiService: GeminiService) {}
+  constructor(private readonly geminiService: GeminiService) { }
 
   async outputStreamResponse(
     res: Response,
@@ -18,7 +19,7 @@ export class GeminiController {
     res.status(HttpStatus.OK);
 
     let resultText = '';
-    for await(const chunk of stream) {
+    for await (const chunk of stream) {
       const piece = chunk.text;
       resultText += piece;
       res.write(piece);
@@ -78,5 +79,20 @@ export class GeminiController {
       role: message.role,
       parts: message.parts?.map((part) => part.text).join(''),
     }));
+  }
+
+  @Post('image-generation')
+  @UseInterceptors(FilesInterceptor('files'))
+  async imageGeneration(
+    @Body() imageGenerationDto: ImageGenerationDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    imageGenerationDto.files = files;
+
+    const { imageUrl, text } = await this.geminiService.imageGeneration(imageGenerationDto);
+    return {
+      imageUrl: imageUrl,
+      text: text
+    }
   }
 }
