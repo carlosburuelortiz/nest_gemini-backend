@@ -6,6 +6,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ChatPromptDto } from './dtos/chat-prompt-dto';
 import { GenerateContentResponse } from '@google/genai';
 import { ImageGenerationDto } from './dtos/image-generation-dto';
+import { PokemonHelperDto } from './dtos/pokemon-helper-dto';
 
 @Controller('gemini')
 export class GeminiController {
@@ -94,5 +95,10 @@ export class GeminiController {
       imageUrl: imageUrl,
       text: text
     }
+  }
+
+  @Post('pokemon-helper')
+  getPokemonHelper(@Body() pokemonHelperDto: PokemonHelperDto) {
+    return this.geminiService.getPokemonHelper(pokemonHelperDto);
   }
 }
