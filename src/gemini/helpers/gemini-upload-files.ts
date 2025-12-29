@@ -29,7 +29,6 @@ export const geminiUploadFiles = async (
   const { transformToPng } = options;
 
   if (transformToPng) {
-    console.log({transformToPng});
     const pngUploadedFiles = await Promise.all(
       files.map(async (file)=> {
         const buffer = await sharp(file.buffer).png().toBuffer();

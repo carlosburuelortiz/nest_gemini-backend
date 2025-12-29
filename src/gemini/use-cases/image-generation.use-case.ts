@@ -49,8 +49,6 @@ export const imageGenerationUseCase = async (
         },
     });
 
-    console.log(response);
-
     let imageUrl = '';
     let text = '';
     const imageId = uuidV4();
